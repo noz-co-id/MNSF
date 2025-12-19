@@ -1,0 +1,36 @@
+# Mobile Network Security Framework - Dependencies
+# Core Framework
+scapy>=2.5.0
+pyshark>=0.4.6
+pyyaml>=6.0
+psutil>=5.9.0
+colorlog>=6.7.0
+tqdm>=4.65.0
+requests>=2.28.0
+
+# Data Processing & Analysis
+numpy>=1.24.0
+pandas>=2.0.0
+matplotlib>=3.7.0
+
+# Network & Security
+pysctp>=0.6.1
+pycryptodome>=3.17.0
+cryptography>=41.0.0
+
+# Web & API
+flask>=2.3.0
+flask-cors>=4.0.0
+
+# Development & Testing
+pytest>=7.3.0
+pytest-cov>=4.0.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Documentation
+sphinx>=7.0.0
+sphinx-rtd-theme>=1.2.0
+
+# Note: SDR-specific packages (pyuhd, gnuradio) are optional
+# and require system-level dependencies
