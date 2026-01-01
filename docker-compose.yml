@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  mnsf-core:
+    build: .
+    container_name: mnsf-container
+    privileged: true
+    network_mode: host
+    devices:
+      - "/dev/bus/usb:/dev/bus/usb"
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/var/log/mnsf
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./configs/global_regulations.yaml:/app/configs/global_regulations.yaml:ro
+    environment:
+      - DISPLAY=${DISPLAY}
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+      - GNSS_ENABLED=true
+      - LAB_MODE=true
+      - REGULATORY_COMPLIANCE=true
+    cap_add:
+      - SYS_TIME
+      - SYS_NICE
+      - NET_ADMIN
+    restart: unless-stopped
+    command: ["python3", "core/framework.py", "--start-all"]
+
+  gnss-processor:
+    image: gnsssdr/gnss-sdr:latest
+    container_name: gnss-processor
+    network_mode: "host"
+    privileged: true
+    devices:
+      - "/dev/bus/usb:/dev/bus/usb"
+    volumes:
+      - ./modules/gnss/config:/etc/gnss-sdr
+      - ./logs/gnss:/var/log/gnss-sdr
+      - ./data/gnss:/var/data/gnss
+    environment:
+      - UHD_IMAGES_DIR=/usr/share/uhd/images
+      - GNSS_SDR_CONF=/etc/gnss-sdr/gps_l1_usrp.conf
+    command: ["gnss-sdr", "--config_file=/etc/gnss-sdr/gps_l1_usrp.conf"]
+
+  compliance-monitor:
+    build: .
+    container_name: compliance-monitor
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./logs:/var/log/mnsf:ro
+    environment:
+      - COMPLIANCE_LEVEL=STRICT
+      - REPORT_INTERVAL=300
+    command: ["python3", "core/compliance_monitor.py", "--monitor"]
+
+  srsran-core:
+    image: srsran/core:latest
+    container_name: srsran-core
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./configs:/etc/srsran
+    environment:
+      - RAN_COMPONENT=all
+    command: ["/bin/bash", "-c", "sleep 10 && start_srsran"]
+
+volumes:
+  mnsf-data:
+  gnss-cache:
