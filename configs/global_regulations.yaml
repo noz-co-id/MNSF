@@ -1,0 +1,169 @@
+# MNSF Global Regulatory Compliance Configuration
+# This file defines the regulatory framework for all operations
+
+version: "1.0.0"
+last_updated: "2024-01-01"
+framework: "MNSF Regulatory Compliance"
+
+# Compliance level (lab, test, production)
+compliance_level: "lab"
+
+# Regulatory authorities
+authorities:
+  - name: "ITU"
+    jurisdiction: "global"
+    standards: ["ITU-R M.1901", "ITU-R M.2012"]
+    
+  - name: "3GPP"
+    jurisdiction: "global"
+    standards: ["TS 36.133", "TS 25.133", "TS 38.133"]
+    
+  - name: "ETSI"
+    jurisdiction: "europe"
+    standards: ["EN 302 208", "EN 301 893"]
+    
+  - name: "FCC"
+    jurisdiction: "usa"
+    standards: ["Part 15", "Part 90"]
+    
+  - name: "CE"
+    jurisdiction: "europe"
+    standards: ["Directive 2014/53/EU"]
+
+# Laboratory environment restrictions
+lab_restrictions:
+  transmission_enabled: false
+  max_tx_power_dbm: -30
+  frequency_bands:
+    - name: "GPS L1"
+      range: [1575.42MHz ± 10MHz]
+      purpose: "reception_only"
+      
+    - name: "ISM 2.4GHz"
+      range: [2400MHz, 2483.5MHz]
+      purpose: "reception_only"
+      
+    - name: "Cellular Bands"
+      range: [all]
+      purpose: "reception_only"
+  
+  data_retention:
+    raw_data_days: 7
+    processed_data_days: 30
+    compliance_logs_days: 365
+    
+  access_control:
+    authentication_required: true
+    encryption_required: true
+    audit_logging: true
+
+# Regulatory rules
+regulatory_rules:
+  - id: "RULE-001"
+    standard: "3GPP TS 36.133"
+    description: "Base Station Timing Accuracy"
+    requirement: "Time alignment error < 1.5μs"
+    max_violations: 3
+    penalty: "operation_suspended"
+    
+  - id: "RULE-002"
+    standard: "ITU-R M.1901"
+    description: "GNSS Receiver Performance"
+    requirement: "Position accuracy < 10m (95%)"
+    max_violations: 5
+    penalty: "warning_logged"
+    
+  - id: "RULE-003"
+    standard: "ETSI EN 302 208"
+    description: "RF Transmission Restrictions"
+    requirement: "No unauthorized transmission"
+    max_violations: 1
+    penalty: "immediate_shutdown"
+    
+  - id: "RULE-004"
+    standard: "FCC Part 15"
+    description: "Unintentional Radiators"
+    requirement: "Emissions within limits"
+    max_violations: 2
+    penalty: "power_reduction"
+    
+  - id: "RULE-005"
+    standard: "GDPR/Privacy"
+    description: "Data Protection"
+    requirement: "Anonymize all captured data"
+    max_violations: 0
+    penalty: "data_purge"
+
+# 3GPP specific requirements
+3gpp_requirements:
+  timing_synchronization:
+    reference: "TS 36.133 Section 7"
+    requirements:
+      - requirement: "Time alignment between cells"
+        value: "< 1.5 μs"
+        
+      - requirement: "Absolute time accuracy"
+        value: "< 10 μs"
+        
+      - requirement: "Frequency accuracy"
+        value: "±0.1 ppm"
+        
+  rf_requirements:
+    reference: "TS 36.104"
+    requirements:
+      - requirement: "Output power accuracy"
+        value: "±2.0 dB"
+        
+      - requirement: "EVM (64QAM)"
+        value: "< 8%"
+        
+      - requirement: "ACLR"
+        value: "> 45 dB"
+
+# Compliance monitoring settings
+monitoring:
+  check_interval_seconds: 10
+  report_interval_minutes: 60
+  alert_channels:
+    - type: "log"
+      level: "warning"
+      
+    - type: "email"
+      enabled: false
+      
+    - type: "syslog"
+      enabled: true
+  
+  auto_remediation:
+    enabled: true
+    actions:
+      - action: "power_reduction"
+        trigger: "tx_power_exceeded"
+        
+      - action: "frequency_block"
+        trigger: "unauthorized_frequency"
+        
+      - action: "shutdown"
+        trigger: "severe_violation"
+
+# Certification and approval
+certification:
+  lab_certification_id: "LAB-ISO-2024-001"
+  valid_until: "2024-12-31"
+  certifying_authority: "MNSF Compliance Board"
+  restrictions: "Laboratory use only. No commercial deployment."
+  contact: "compliance@mnsf.lab"
+
+# Legal disclaimer
+disclaimer: |
+  This framework is for RESEARCH AND EDUCATIONAL PURPOSES ONLY.
+  
+  All operations must be conducted in a controlled laboratory environment
+  with appropriate shielding and isolation.
+  
+  Unauthorized transmission of RF signals is strictly prohibited.
+  
+  Users are responsible for complying with all local regulations and
+  obtaining necessary permits before operation.
+  
+  The developers assume no liability for misuse of this software.
