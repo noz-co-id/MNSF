@@ -34,10 +34,7 @@ If you identify a potential security flaw—particularly regarding **X2-C interf
 - **MEDIUM**: Routing anomalies, SIP-level packet drops, or UERANSIM connectivity failures observed in isolated EPC/IMS environments.
 
 ## Our Commitment
-Our research aims to test capabilities in a **realistic and isolated manner**. Upon receiving a report, our team will:
-1. **Acknowledge**: Confirm receipt within 48 hours.
-2. **Replicate**: Validate the finding within our isolated **UERANSIM + srsRAN + Open5GS** testbed.
-3. **Coordinate**: If the vulnerability is inherent to the FOSS projects, we will assist in reporting to the respective maintainers for CVE registration.
+Upon receiving a report, our team will validate the finding within our isolated UERANSIM + srsRAN + Open5GS testbed and assist in reporting to the respective FOSS maintainers for CVE registration.
 
 ---
 *Note: All research is conducted in compliance with 3GPP standards (TS 23.501, TS 33.501) for the purpose of global telecommunication security improvement.*
