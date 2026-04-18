@@ -45,5 +45,6 @@ Our research aims to test capabilities in a **realistic and isolated manner**. U
 **Author:** Tri Sumarno, S.H., M.T.I.  
 **Affiliation:** PT NOZ Berkarya Indonesia
 
+![PoC Dashboard](./assets/PoC_1.png)
 ![PoC Dashboard](./assets/PocDashboard_1.png)
 ![PoC Dashboard](./assets/Poc_Dashboard_2.png)
